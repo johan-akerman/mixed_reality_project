@@ -6,6 +6,8 @@ module.exports = {
       batYellow: "#FAE811",
       black: "#000",
       white: "#fff",
+      gray: "#333",
+      green: "#A5CC8E",
     },
   },
   plugins: [],

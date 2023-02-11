@@ -5,9 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Onboarding() {
   return (
     <div className="h-screen w-full bg-batYellow">
-      <Link to="/" className="absolute top-10 left-10">
-        <FontAwesomeIcon icon={faArrowLeftLong} className="text-4xl" />
-      </Link>{" "}
       <div className="mx-auto w-1/2 text-center py-32">
         <h1 className="text-4xl font-black">How To Play</h1>
         <p className="text-xl pt-4 ">1. Instruction goes here</p>

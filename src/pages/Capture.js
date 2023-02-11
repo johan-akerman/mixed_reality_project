@@ -1,35 +1,117 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faArrowAltCircleUp, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 import bat from "../images/bat.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Capture() {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const navigate = useNavigate();
+  const canvasRef = useRef(null);
+  const fps = 25;
+  let batAngle = 0;
+  let canvasWidth = 384;
+  let canvasHeight = 384;
+  let centerX = canvasWidth / 2;
+  let centerY = canvasHeight / 2;
+  let radius = 100;
+  let offset = 35;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    setInterval(updateCanvas, 1000 / fps);
+  }, []);
+
+  function updateCanvas() {
+    if (batAngle < 91 && batAngle > 89) {
+      navigate("/scene_01");
+    }
+    batAngle++;
+    clearCanvas();
+    drawEnvironment();
+    drawBat(batAngle);
+  }
+
+  function clearCanvas() {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  }
+
+  function drawBat(angle) {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    var img = document.getElementById("bat");
+    ctx.drawImage(
+      img,
+      (radius + offset) * Math.cos(batAngle * (Math.PI / 180) * -1) +
+        centerX -
+        25,
+      (radius + offset) * Math.sin(batAngle * (Math.PI / 180) * -1) +
+        centerY -
+        15,
+      50,
+      30
+    );
+
+    console.log(batAngle);
+  }
+
+  function drawEnvironment() {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.strokeStyle = "white";
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.strokeStyle = "yellow";
+    ctx.setLineDash([0, 0]);
+
+    ctx.beginPath();
+    ctx.arc(centerX, 57, 30, 0, 2 * Math.PI);
+    ctx.fillStyle = "yellow";
+    ctx.fill();
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX - 29, 60);
+    ctx.lineTo(centerX + 29, 60);
+    ctx.fillStyle = "rgba(255, 255, 2, 0.4)";
+
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.rect(centerX - 15, centerY - 15, 30, 40);
+    ctx.fillStyle = "#eee";
+    ctx.fill();
+  }
 
   return (
-    <div className="h-screen w-full bg-batYellow">
-      <Link to="/map" className="absolute top-10 right-10">
-        <FontAwesomeIcon icon={faTimes} className="text-4xl" />
+    <div className="h-screen w-full bg-green">
+      <Link to="/map" className="absolute top-10 right-10 text-black">
+        <FontAwesomeIcon icon={faTimes} className="text-5xl" />
       </Link>
-      <div className="mx-auto w-96 text-center py-32">
-        <h1 className="text-4xl font-black">You are approaching a scene!</h1>
-        <p className="text-xl pt-4 ">
-          Capture the scene by looking in the right direction as it plays out.
-          Be careful, if you go to far away this will close.
+      <div className="mx-auto w-96 text-center pt-32 text-black">
+        <img id="bat" src={bat} width="220" height="277" className="hidden" />
+        <h1 className="text-5xl font-black">You are approaching a scene!</h1>
+        <p className="text-lg pt-4 ">
+          Unlock the scene by rotating your device until the lamp is aiming at
+          the bat.
         </p>
 
-        <div className="w-64 h-64 border-8 rounded-full mx-auto my-8 relative">
-          <img
-            src={bat}
-            className="w-20 absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          />
-          <h1 className="absolute  top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-semibold">
-            ~5m away
-          </h1>
-        </div>
+        <canvas
+          ref={canvasRef}
+          className="w-full h-96 mt-8"
+          width={canvasWidth}
+          height={canvasHeight}
+        />
       </div>
     </div>
   );

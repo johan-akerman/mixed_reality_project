@@ -40,7 +40,7 @@ export default function Capture() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   }
 
-  function drawBat(angle) {
+  function drawBat() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     var img = document.getElementById("bat");

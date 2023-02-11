@@ -6,11 +6,17 @@ export default function Home() {
     <div className="h-screen w-full bg-batYellow">
       <div className="mx-auto w-1/2 text-center py-32">
         <img src={bat} className="w-56 mx-auto" />
+
         <h1 className="text-6xl font-black uppercase">Wayne Manor</h1>
         <h2 className="text-5xl font-semibold uppercase tracking-normal">
           Behind The Scenes
         </h2>
-        <p className="text-xl pt-4 ">Text about the game goes here</p>
+        <p className="text-xl pt-4 ">
+          In this locative media based game you will explore the film set of
+          Batman's mansion located in Wollaton Park in Nottingham. Go for a walk
+          around the park and unlock movie scenes by battling the bats that are
+          guarding the mansion.
+        </p>
 
         <Link
           to="/onboarding"

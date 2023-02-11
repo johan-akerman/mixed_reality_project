@@ -45,8 +45,11 @@ export default function Map() {
 
     map.on("load", function (e) {
       scenes.forEach((scene) => {
-        const marker = new mapboxgl.Marker();
-        marker.setLngLat(scene.coordinates).addTo(map);
+        var el = document.createElement("H1");
+        el.classList.add("text-5xl");
+        var t = document.createTextNode("🦇");
+        el.appendChild(t);
+        new mapboxgl.Marker(el).setLngLat(scene.coordinates).addTo(map);
       });
     });
 
